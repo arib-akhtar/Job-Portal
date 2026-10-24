@@ -67,16 +67,14 @@ async function registerUser(req, res) {
             await user.save();
         }
 
-        // Email sending inside try-catch so it never hangs registration
-        try {
-            await sendEmail({
-                email: user.email,
-                subject: "Account Verification OTP - JobPortal Nexus",
-                message: `Hello ${name},\n\nYour OTP for account verification is: ${otpCode}\nThis OTP is valid for 10 minutes.\n\nRegards,\nJobPortal Nexus`
-            });
-        } catch (emailErr) {
+        // Fire-and-forget: No await, email background me jayegi aur response turant mil jayega
+        sendEmail({
+            email: user.email,
+            subject: "Account Verification OTP - JobPortal Nexus",
+            message: `Hello ${name},\n\nYour OTP for account verification is: ${otpCode}\nThis OTP is valid for 10 minutes.\n\nRegards,\nJobPortal Nexus`
+        }).catch(emailErr => {
             console.error("BG Email sending failed:", emailErr.message);
-        }
+        });
 
         return res.status(200).json({
             success: true,
