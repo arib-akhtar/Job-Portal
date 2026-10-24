@@ -18,11 +18,11 @@ const generateToken = (id) => {
 const cookieOption = {
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     httpOnly: true,
-    secure: true,      
-    sameSite: "none"   
+    secure: true,
+    sameSite: "none"
 };
 
-// 1. REGISTER USER (Plain password bhejo, Mongoose schema khud pre-save hook se hash karega)
+// 1. REGISTER USER (Safe email error handling added)
 async function registerUser(req, res) {
     try {
         const { name, email, password, role, companyName } = req.body;
@@ -41,9 +41,9 @@ async function registerUser(req, res) {
 
         if (!user) {
             user = await User.create({
-                name, 
-                email, 
-                password: password, // 👈 Plain password (Schema hash kar dega)
+                name,
+                email,
+                password: password,
                 role,
                 isVerified: false,
                 otp: otpCode,
@@ -60,18 +60,23 @@ async function registerUser(req, res) {
             }
         } else {
             user.name = name;
-            user.password = password; // 👈 Plain password update (Schema hash kar dega on save)
+            user.password = password;
             user.role = role;
             user.otp = otpCode;
             user.otpExpire = otpExpireDate;
             await user.save();
         }
 
-        await sendEmail({
-            email: user.email,
-            subject: "Account Verification OTP - JobPortal Nexus",
-            message: `Hello ${name},\n\nYour OTP for account verification is: ${otpCode}\nThis OTP is valid for 10 minutes.\n\nRegards,\nJobPortal Nexus`
-        });
+        // Email sending inside try-catch so it never hangs registration
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: "Account Verification OTP - JobPortal Nexus",
+                message: `Hello ${name},\n\nYour OTP for account verification is: ${otpCode}\nThis OTP is valid for 10 minutes.\n\nRegards,\nJobPortal Nexus`
+            });
+        } catch (emailErr) {
+            console.error("BG Email sending failed:", emailErr.message);
+        }
 
         return res.status(200).json({
             success: true,
@@ -88,7 +93,7 @@ async function registerUser(req, res) {
     }
 }
 
-// 2. VERIFY OTP (Account verify karega, direct token nahi dega)
+// 2. VERIFY OTP
 async function verifyOtp(req, res) {
     try {
         const { email, otp } = req.body;
@@ -123,7 +128,7 @@ async function verifyOtp(req, res) {
     }
 }
 
-// 3. LOGIN USER (Check karega ki verified hai ya nahi)
+// 3. LOGIN USER
 async function loginUser(req, res) {
     try {
         const { email, password } = req.body;
@@ -167,7 +172,7 @@ async function loginUser(req, res) {
             name: user.name,
             email: user.email,
             role: user.role,
-            token            
+            token
         });
     } catch (error) {
         console.error("LOGIN ERROR:", error);
@@ -188,7 +193,7 @@ async function googleAuth(req, res) {
         const googleRes = await axios.get(`https://oauth2.googleapis.com/tokeninfo`, {
             params: { id_token: token }
         });
-        
+
         const { email, name } = googleRes.data;
 
         if (!email) {
@@ -216,7 +221,7 @@ async function googleAuth(req, res) {
                 email,
                 password: hashedPassword,
                 role: assignedRole,
-                isVerified: true 
+                isVerified: true
             });
 
             if (assignedRole === "seeker") {
@@ -325,7 +330,7 @@ async function forgotPassword(req, res) {
         user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
         await user.save({ validateBeforeSave: false });
 
-        const frontendUrl = process.env.FRONTEND_URL || "https://frontend-ma5e338m4-skillhub0260-6584.vercel.app";
+        const frontendUrl = process.env.FRONTEND_URL || "https://job-portal-2627.vercel.app";
         const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
         const message = `You are receiving this email because you have requested a password reset.\n\nPlease make a Put request to:\n\n${resetUrl}`;
 
