@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, LogIn, ChevronDown } from 'lucide-react';
+import { Mail, Lock, LogIn, ChevronDown, Eye, EyeOff } from 'lucide-react';
 import API from '../utils/api'; // 👈 Ab sahi API instance import kar liya hai
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -13,6 +13,7 @@ function Login({ onLogin }) {
   });
   const [isForgotMode, setIsForgotMode] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -151,14 +152,26 @@ function Login({ onLogin }) {
                     <Lock className="h-5 w-5 text-slate-400" />
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="••••••••"
                     required
-                    className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 text-slate-800"
+                    className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-sm outline-none transition focus:border-blue-500 text-slate-800"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
                 </div>
               </div>
 

@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
+import ScrollToTop from './components/ScrollToTop';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import AdminLogin from './pages/AdminLogin';
@@ -65,11 +66,6 @@ function App() {
   
   const isStandaloneRoute = location.pathname !== '/' && (['/admin', '/admin/dashboard', '/recruiter', '/seeker', '/tracker', '/profile', '/login', '/admin-login', '/register', '/post-job'].includes(location.pathname) || location.pathname.startsWith('/reset-password'));
 
-  useEffect(() => {
-    if (location.pathname === '/') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [location.pathname]);
 
   useEffect(() => {
     const rawUrl = (import.meta.env.VITE_API_URL || 'https://job-portal-v23h.onrender.com').trim().replace(/\/+$/, '');
@@ -99,6 +95,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-transparent text-slate-800">
+      <ScrollToTop />
       <div>
         {/* 🛡️ Admin Dashboard par hone par upar wala Navbar hide ho jayega */}
         {location.pathname !== '/admin/dashboard' && <Navbar user={user} onLogout={handleLogout} />}

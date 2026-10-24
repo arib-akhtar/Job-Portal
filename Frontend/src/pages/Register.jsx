@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Briefcase, ChevronDown, ShieldCheck } from 'lucide-react';
+import { User, Mail, Lock, Briefcase, ChevronDown, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import API from '../utils/api'; 
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -13,6 +13,9 @@ function Register({ onLogin }) {
     confirmPassword: '',
     role: 'Seeker', 
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
@@ -189,14 +192,26 @@ function Register({ onLogin }) {
                       <Lock className="h-5 w-5 text-slate-400" />
                     </div>
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 text-slate-800"
+                      className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-sm outline-none transition focus:border-blue-500 text-slate-800"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
                   </div>
                 </div>
 
@@ -207,14 +222,26 @@ function Register({ onLogin }) {
                       <Lock className="h-5 w-5 text-slate-400" />
                     </div>
                     <input
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="••••••••"
                       required
-                      className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-blue-500 text-slate-800"
+                      className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-sm outline-none transition focus:border-blue-500 text-slate-800"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword((prev) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                      aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
                   </div>
                 </div>
 
