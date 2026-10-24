@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 const Categories = ({ 
   categoriesRef, 
@@ -12,55 +12,33 @@ const Categories = ({
   ], 
   sectionStyle = {} 
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const localRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentRef = categoriesRef || localRef;
-    if (currentRef.current) {
-      observer.observe(currentRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [categoriesRef]);
-
   const scrollingCategories = [...categories, ...categories, ...categories];
 
   return (
     <div 
-      ref={categoriesRef || localRef} 
+      ref={categoriesRef} 
       style={sectionStyle}
-      className={`pt-8 overflow-hidden bg-white rounded-[24px] mt-8 pb-12 max-w-[85rem] mx-auto px-6 transition-all duration-700 ease-out border border-[#e2e8f0] shadow-lg ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      }`}
+      className="optimized-section pt-6 sm:pt-8 overflow-hidden bg-white rounded-3xl mt-6 sm:mt-8 pb-8 sm:pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border border-slate-200/80 shadow-md"
     >
-      <div className="flex justify-between items-center mb-8 flex-wrap gap-4 px-2">
+      <div className="flex justify-between items-end mb-6 sm:mb-8 flex-wrap gap-4 px-1">
         <div>
-          <h2 className="text-[2.5rem] font-bold text-[#0f172a] m-0">Browse Jobs By Category</h2>
-          <p className="text-[1.1rem] text-[#64748b] mt-2 mb-0">Find Jobs from 100+ Categories</p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0f172a] m-0 tracking-tight">
+            Browse Jobs By Category
+          </h2>
+          <p className="text-sm sm:text-base text-[#64748b] mt-1.5 mb-0">Find Jobs from 100+ Categories</p>
         </div>
         <a 
-          href="#" 
-          className="text-[#2563eb] font-semibold no-underline flex items-center gap-2 transition-colors duration-200 hover:text-[#1d4ed8]"
+          href="#categories" 
+          className="text-[#2563eb] text-sm sm:text-base font-semibold no-underline flex items-center gap-1.5 transition-colors duration-200 hover:text-[#1d4ed8]"
         >
           Explore All Categories &rarr;
         </a>
       </div>
 
       <div
-        className="flex gap-6 w-max pl-2"
+        className="flex gap-4 sm:gap-6 w-max pl-1 will-change-transform"
         style={{
-          animation: isVisible ? "scrollRightToLeft 25s linear infinite" : "none",
+          animation: "scrollRightToLeft 28s linear infinite",
         }}
         onMouseEnter={(e) => { e.currentTarget.style.animationPlayState = "paused"; }}
         onMouseLeave={(e) => { e.currentTarget.style.animationPlayState = "running"; }}
@@ -68,15 +46,15 @@ const Categories = ({
         {scrollingCategories.map((cat, index) => (
           <div
             key={`${cat.name}-${index}`}
-            className="bg-[#edf3ff] p-[2rem_2.5rem] rounded-[20px] shadow-[0_10px_25px_-5px_rgba(0,0,0,0.04)] border border-[#d2e3fc] transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer text-center min-w-[220px] shrink-0 hover:shadow-[0_20px_30px_-10px_rgba(37,99,235,0.12)] hover:scale-110 hover:-translate-y-1.5 hover:border-[#2563eb]/40"
+            className="bg-[#edf3ff] p-5 sm:p-7 rounded-2xl shadow-xs border border-[#d2e3fc] transition-all duration-300 ease-out cursor-pointer text-center min-w-[180px] sm:min-w-[210px] shrink-0 hover:shadow-md hover:-translate-y-1 hover:border-[#2563eb]/40"
           >
-            <div className="text-[3rem] drop-shadow-sm">
+            <div className="text-4xl sm:text-5xl drop-shadow-xs">
               {cat.icon}
             </div>
-            <h3 className="text-[1.2rem] font-bold mt-3 text-[#0f172a]">
+            <h3 className="text-base sm:text-lg font-bold mt-3 text-[#0f172a]">
               {cat.name}
             </h3>
-            <p className="text-[#2563eb] text-[0.9rem] font-semibold mt-1">
+            <p className="text-[#2563eb] text-xs sm:text-sm font-semibold mt-1">
               {cat.jobs} Jobs Available
             </p>
           </div>
@@ -86,4 +64,4 @@ const Categories = ({
   );
 };
 
-export default Categories;
+export default Categories;

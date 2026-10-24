@@ -32,29 +32,6 @@ function LandingPage() {
     fetchJobs();
   }, [activeQuery]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, { threshold: 0.05 });
-
-    const elements = document.querySelectorAll('.scroll-fade, .image-zoom-reveal');
-    elements.forEach(el => {
-      observer.observe(el);
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) {
-        el.classList.add('active');
-      }
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   const visibleJobs = useMemo(() => {
     return jobs.slice(0, 3);
   }, [jobs]);
@@ -78,34 +55,10 @@ function LandingPage() {
   };
 
   return (
-    <div className="space-y-8 py-2 sm:py-4 overflow-x-hidden">
+    <div className="optimized-section space-y-8 py-2 sm:py-4 overflow-x-hidden">
       <Toaster position="top-right" toastOptions={{ duration: 2200 }} />
 
-      <style>{`
-        .scroll-fade {
-          opacity: 0;
-          transform: translateY(50px);
-          transition: opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1), transform 2.5s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .scroll-fade.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .image-zoom-reveal {
-          opacity: 0;
-          transform: scale(0.6) translateY(50px);
-          transition: opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1), transform 2.5s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .image-zoom-reveal.active {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-      `}</style>
-
-      <section className="scroll-fade relative overflow-hidden rounded-[36px] border border-white/20 bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] p-6 text-black shadow-[0_30px_90px_rgba(15,23,42,0.15)] sm:p-8 lg:p-10">
+      <section className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] border border-white/20 bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] p-5 sm:p-8 lg:p-10 text-black shadow-[0_20px_50px_rgba(15,23,42,0.12)]">
         <div className="hero-glow" />
         <div className="relative grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
@@ -144,7 +97,7 @@ function LandingPage() {
             </div>
           </div>
 
-          <div className="image-zoom-reveal rounded-[24px] border border-black/15 bg-white/30 p-4 backdrop-blur lg:p-5 shadow-xl">
+          <div className="rounded-[24px] border border-black/15 bg-white/30 p-4 backdrop-blur lg:p-5 shadow-xl">
             <div className="rounded-[20px] bg-white p-4 text-slate-800 shadow-[0_20px_60px_rgba(2,6,23,0.18)]">
               <div className="flex items-center gap-2 text-sm font-semibold text-blue-700">
                 <Search className="h-4 w-4" />
@@ -204,16 +157,16 @@ function LandingPage() {
       {/* Jobs Section Ref for Scrolling */}
       <div ref={jobsSectionRef}></div>
 
-      <section className="scroll-fade grid gap-4 md:grid-cols-3">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         {stats.map((item) => (
-          <div key={item.label} className="stat-card card-hover rounded-[24px] border border-slate-200/80 p-5 text-center bg-white shadow-sm">
-            <p className="text-3xl font-semibold text-slate-800">{item.value}</p>
-            <p className="mt-2 text-sm font-medium text-slate-500">{item.label}</p>
+          <div key={item.label} className="stat-card card-hover rounded-2xl sm:rounded-3xl border border-slate-200/80 p-5 text-center bg-white shadow-xs">
+            <p className="text-3xl font-bold text-slate-800">{item.value}</p>
+            <p className="mt-1.5 text-xs sm:text-sm font-medium text-slate-500">{item.label}</p>
           </div>
         ))}
       </section>
 
-      <section className="image-zoom-reveal section-shell rounded-[28px] bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] p-6 text-black sm:p-8 shadow-xl border border-white/20">
+      <section className="section-shell rounded-[24px] sm:rounded-[28px] bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] p-6 sm:p-8 shadow-lg border border-white/20">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <div className="inline-flex rounded-full border border-black/15 bg-white/20 px-3 py-1 text-sm text-black backdrop-blur">

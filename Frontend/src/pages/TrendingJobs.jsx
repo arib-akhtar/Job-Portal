@@ -5,9 +5,7 @@ import api from '../api/axios';
 
 const TrendingJobs = ({ sectionStyle = {} }) => {
   const [activeFilter, setActiveFilter] = useState('All Jobs');
-  const [isVisible, setIsVisible] = useState(false);
   const [jobs, setJobs] = useState([]);
-  const localRef = useRef(null);
   const navigate = useNavigate();
   
   // LocalStorage se logged-in user ki details nikalna
@@ -25,21 +23,6 @@ const TrendingJobs = ({ sectionStyle = {} }) => {
       }
     };
     fetchJobs();
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (localRef.current) observer.observe(localRef.current);
-    return () => observer.disconnect();
   }, []);
   
   const filterOptions = ['All Jobs', 'Full-time', 'Part-time', 'Internship', 'Contract'];
@@ -83,36 +66,30 @@ const TrendingJobs = ({ sectionStyle = {} }) => {
 
   return (
     <div 
-      ref={localRef} 
-      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans"
-      style={{
-        ...sectionStyle,
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "translateY(0)" : "translateY(40px)",
-        transition: "opacity 0.8s ease-out, transform 0.8s ease-out"
-      }}
+      className="optimized-section w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-sans"
+      style={sectionStyle}
     >
       <Toaster position="top-right" />
 
       {/* Header & Filter Tabs */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10">
         <div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0f172a] tracking-tight">Trending Jobs</h2>
-          <p className="mt-2 text-base text-slate-600 font-medium">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0f172a] tracking-tight">Trending Jobs</h2>
+          <p className="mt-1.5 text-sm sm:text-base text-slate-600 font-medium">
             Handpicked roles from top companies — apply before they're gone!
           </p>
         </div>
         
         {/* Responsive Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none w-full md:w-auto">
           {filterOptions.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveFilter(tab)}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap cursor-pointer ${
                 activeFilter === tab 
-                  ? 'bg-slate-900 text-white shadow-md shadow-slate-900/10' 
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
+                  ? 'bg-slate-900 text-white shadow-sm' 
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80'
               }`}
             >
               {tab}
@@ -123,21 +100,16 @@ const TrendingJobs = ({ sectionStyle = {} }) => {
 
       {/* Jobs Grid or Empty State */}
       {filteredJobs.length === 0 ? (
-        <div className="text-center py-16 bg-slate-50 rounded-3xl border border-slate-200 text-slate-700">
-          <p className="text-lg font-semibold">No {activeFilter} jobs available right now.</p>
-          <p className="text-sm text-slate-500 mt-1">Try selecting a different category filter.</p>
+        <div className="text-center py-12 sm:py-16 bg-slate-50 rounded-3xl border border-slate-200 text-slate-700">
+          <p className="text-base sm:text-lg font-semibold">No {activeFilter} jobs available right now.</p>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">Try selecting a different category filter.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {filteredJobs.map((job, idx) => (
             <div
               key={job._id || idx}
-              className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col justify-between"
-              style={{
-                opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(20px)",
-                transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${idx * 0.08}s`,
-              }}
+              className="group bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.07)] hover:border-indigo-200 transition-all duration-200 flex flex-col justify-between"
             >
               {/* Top Section: Logo & Details */}
               <div className="flex items-start gap-4">

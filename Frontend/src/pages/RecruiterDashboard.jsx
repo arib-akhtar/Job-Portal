@@ -174,7 +174,7 @@ function RecruiterDashboard() {
   const statusOptions = ['Pending', 'Viewed', 'Shortlisted', 'Selected', 'Rejected'];
 
   return (
-    <div className="min-h-screen flex flex-col justify-between overflow-x-hidden font-sans w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] bg-slate-50 m-0 p-0">
+    <div className="min-h-screen flex flex-col justify-between overflow-x-hidden font-sans w-full bg-slate-50 m-0 p-0">
       
       <div className="w-full pb-16 space-y-8 m-0 p-0">
         

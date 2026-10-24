@@ -34,46 +34,46 @@ const LatestNews = ({
   <div 
     ref={newsRef} 
     style={sectionStyle}
-    className="pt-8 max-w-[85rem] mx-auto px-6"
+    className="optimized-section pt-8 sm:pt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
   >
-    <div className="flex justify-between items-center mb-2 flex-wrap gap-4 px-2">
+    <div className="flex justify-between items-end mb-4 sm:mb-6 flex-wrap gap-4 px-1">
       <div>
-        <h2 className="text-[2.5rem] font-bold text-[#0A2540] m-0">Latest News</h2>
-        <p className="text-[1.1rem] text-[#5E6D77] mt-2 mb-0">People love working with Jobnetic</p>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2540] m-0 tracking-tight">Latest News</h2>
+        <p className="text-sm sm:text-base text-[#5E6D77] mt-1.5 mb-0">People love working with Jobnetic</p>
       </div>
       <a 
-        href="#" 
-        className="text-[#635BFF] font-semibold no-underline transition-colors duration-200 hover:text-[#3228ff]"
+        href="#news" 
+        className="text-[#635BFF] text-sm sm:text-base font-semibold no-underline transition-colors duration-200 hover:text-[#3228ff]"
       >
         Explore More &rarr;
       </a>
     </div>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mt-6 sm:mt-8">
       {news.map((item, i) => (
         <div
           key={i}
-          style={{
-            opacity: newsVisible ? 1 : 0,
-            transform: newsVisible ? "translateY(0)" : "translateY(30px)",
-          }}
-          className="bg-white rounded-2xl overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] cursor-pointer hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.12)] hover:-translate-y-1.5"
+          className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow duration-200 cursor-pointer border border-slate-100 flex flex-col justify-between"
         >
-          <div className="overflow-hidden h-[200px]">
+          <div className="overflow-hidden aspect-[16/10] bg-slate-100">
             <img
               src={item.img}
               alt={item.title}
               loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-400 ease-in-out hover:scale-105"
+              width="600"
+              height="375"
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             />
           </div>
-          <div className="p-[1.2rem_1.5rem]">
-            <p className="text-[0.8rem] text-[#94a3b8] m-0">
-              {item.date} · By {item.author}
-            </p>
-            <h4 className="font-semibold text-[#0A2540] mt-2 text-[1rem] leading-[1.4]">
-              {item.title}
-            </h4>
+          <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <p className="text-xs text-[#94a3b8] m-0">
+                {item.date} · By {item.author}
+              </p>
+              <h4 className="font-semibold text-[#0A2540] mt-1.5 text-sm sm:text-base leading-snug">
+                {item.title}
+              </h4>
+            </div>
           </div>
         </div>
       ))}

@@ -108,9 +108,9 @@ function SeekerDashboard() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col justify-between overflow-x-hidden font-sans w-screen relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] bg-slate-50 m-0 p-0 text-slate-900">
+    <div className="min-h-screen flex flex-col justify-between overflow-x-hidden font-sans w-full bg-slate-50 m-0 p-0 text-slate-900">
       
-      <div className="w-full pb-24 space-y-12 m-0 p-0">
+      <div className="w-full pb-20 space-y-10 sm:space-y-12 m-0 p-0">
         
         {/* Original Theme Hero Banner with High-End Polish */}
         <div className="bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] pt-40 pb-36 px-6 sm:px-12 text-center text-slate-900 shadow-xl w-full relative overflow-hidden">

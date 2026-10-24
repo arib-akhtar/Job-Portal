@@ -10,38 +10,9 @@ import {
 } from 'lucide-react';
 
 function Footer() {
-  const footerRef = useRef(null);
-
-  useEffect(() => {
-    const footer = footerRef.current;
-    if (!footer) return undefined;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        footer.classList.add('is-visible');
-        observer.disconnect();
-      }
-    }, { threshold: 0.08 });
-
-    observer.observe(footer);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <footer ref={footerRef} className="footer-reveal bg-white text-slate-700 border-t border-slate-200 pt-16 pb-12 font-sans overflow-x-hidden shadow-sm">
-      <style>{`
-        .footer-reveal {
-          opacity: 0;
-          transform: translateY(12px);
-          transition: opacity 450ms ease-out, transform 450ms ease-out;
-        }
-        .footer-reveal.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-
-      <div className="mx-auto max-w-7xl px-5 md:px-8">
+    <footer className="optimized-section bg-white text-slate-700 border-t border-slate-200 pt-12 sm:pt-16 pb-10 sm:pb-12 font-sans overflow-x-hidden shadow-xs">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Top Section: Info & Links */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-16 border-b border-slate-200">

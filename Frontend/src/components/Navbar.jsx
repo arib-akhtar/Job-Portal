@@ -7,13 +7,14 @@ import {
   Target,
   Sparkles,
   FileText,
-  LayoutDashboard,
   CheckCircle,
   Clock,
   Menu,
   X,
   User as UserIcon,
-  ShieldAlert
+  ShieldAlert,
+  ChevronRight,
+  Home
 } from 'lucide-react';
 import api from '../api/axios';
 
@@ -91,7 +92,6 @@ function Navbar({ user, onLogout }) {
         {/* Center: Navigation Links (Desktop) */}
         <div className="hidden lg:flex items-center gap-8">
           {userRole === 'admin' ? (
-            // 🛡️ Admin ke liye public links bilkul hide rahenge
             <div className="flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-cyan-700">
               <ShieldAlert className="h-4 w-4 text-cyan-600" /> Admin Command Center
             </div>
@@ -234,28 +234,161 @@ function Navbar({ user, onLogout }) {
 
       </nav>
 
-      {/* Mobile Dropdown Navigation Menu */}
-      {showMobileMenu && userRole !== 'admin' && (
-        <div className="mt-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl lg:hidden">
-          <div className="flex flex-col gap-2">
-            {userRole === 'recruiter' ? (
-              <>
-                <Link onClick={() => setShowMobileMenu(false)} to="/" className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">Home</Link>
-                <Link onClick={() => setShowMobileMenu(false)} to="/post-job" className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">Post New Job</Link>
-                <Link onClick={() => setShowMobileMenu(false)} to="/recruiter" className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">Applicant Submissions</Link>
-              </>
-            ) : (
-              <>
-                <Link onClick={() => setShowMobileMenu(false)} to="/" className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">Home</Link>
-                <Link onClick={() => setShowMobileMenu(false)} to="/seeker" className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">Explore Jobs</Link>
-                <Link onClick={() => setShowMobileMenu(false)} to="/tracker" className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">Job Tracker</Link>
-              </>
-            )}
+      {/* 🌟 Professional Glassmorphism Mobile Drawer / Slidebar */}
+      {userRole !== 'admin' && (
+        <>
+          {/* Backdrop Overlay with smooth fade */}
+          <div 
+            className={`fixed inset-0 bg-slate-900/50 backdrop-blur-md z-50 transition-opacity duration-300 lg:hidden ${
+              showMobileMenu ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+            onClick={() => setShowMobileMenu(false)}
+          />
+
+          {/* Sliding Panel */}
+          <div className={`fixed top-0 right-0 h-full w-[300px] sm:w-[340px] bg-white/95 backdrop-blur-xl shadow-2xl border-l border-slate-100 z-50 transform transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col lg:hidden ${
+            showMobileMenu ? 'translate-x-0' : 'translate-x-full'
+          }`}>
+            
+            {/* Drawer Header with Brand Identity */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100/80 bg-slate-50/50">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] text-white shadow-sm">
+                  <BriefcaseBusiness className="h-4 w-4" />
+                </div>
+                <span className="font-bold text-slate-900 text-base tracking-tight">JobPortal</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowMobileMenu(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-200/60 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Profile Greeting Section if User Logged In */}
             {user && (
-              <Link onClick={() => setShowMobileMenu(false)} to="/profile" className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100 sm:hidden">My Profile</Link>
+              <div className="px-6 py-4 bg-gradient-to-br from-indigo-50/60 via-purple-50/30 to-transparent border-b border-slate-100 flex items-center gap-3">
+                <img 
+                  src={`https://ui-avatars.com/api/?name=${user?.fullName || user?.name || 'User'}&background=random&color=fff`} 
+                  alt="Profile" 
+                  className="h-11 w-11 rounded-full object-cover shadow-sm ring-2 ring-indigo-500/20"
+                />
+                <div className="overflow-hidden">
+                  <div className="text-sm font-bold text-slate-900 truncate">{user.fullName || user.name}</div>
+                  <div className="flex items-center gap-1 text-[11px] font-semibold text-indigo-600 uppercase tracking-wide">
+                    <Sparkles className="h-3 w-3" /> {user.role}
+                  </div>
+                </div>
+              </div>
             )}
+
+            {/* Drawer Navigation Links */}
+            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5">
+              <div className="px-3 pb-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
+                Main Menu
+              </div>
+
+              {userRole === 'recruiter' ? (
+                <>
+                  <Link 
+                    onClick={() => setShowMobileMenu(false)} 
+                    to="/" 
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all group"
+                  >
+                    <span className="flex items-center gap-3"><Home className="h-4 w-4 text-slate-400 group-hover:text-indigo-600" /> Home</span>
+                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                  <Link 
+                    onClick={() => setShowMobileMenu(false)} 
+                    to="/post-job" 
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all group"
+                  >
+                    <span className="flex items-center gap-3"><BriefcaseBusiness className="h-4 w-4 text-slate-400 group-hover:text-indigo-600" /> Post New Job</span>
+                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                  <Link 
+                    onClick={() => setShowMobileMenu(false)} 
+                    to="/recruiter" 
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all group"
+                  >
+                    <span className="flex items-center gap-3"><FileText className="h-4 w-4 text-slate-400 group-hover:text-indigo-600" /> Applicant Submissions</span>
+                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    onClick={() => setShowMobileMenu(false)} 
+                    to="/" 
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all group"
+                  >
+                    <span className="flex items-center gap-3"><Home className="h-4 w-4 text-slate-400 group-hover:text-indigo-600" /> Home</span>
+                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                  <Link 
+                    onClick={() => setShowMobileMenu(false)} 
+                    to="/seeker" 
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all group"
+                  >
+                    <span className="flex items-center gap-3"><Target className="h-4 w-4 text-blue-600" /> Explore Jobs</span>
+                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                  <Link 
+                    onClick={() => setShowMobileMenu(false)} 
+                    to="/tracker" 
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all group"
+                  >
+                    <span className="flex items-center gap-3"><FileText className="h-4 w-4 text-indigo-600" /> Job Tracker</span>
+                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                </>
+              )}
+
+              {user && (
+                <>
+                  <div className="pt-4 pb-2 px-3 text-[11px] font-bold tracking-wider text-slate-400 uppercase">
+                    Preferences
+                  </div>
+                  <Link 
+                    onClick={() => setShowMobileMenu(false)} 
+                    to="/profile" 
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all group"
+                  >
+                    <span className="flex items-center gap-3"><UserIcon className="h-4 w-4 text-slate-400 group-hover:text-indigo-600" /> My Profile</span>
+                    <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Drawer Footer / Quick Actions */}
+            <div className="p-5 border-t border-slate-100 bg-slate-50/80 flex flex-col gap-3">
+              {!user ? (
+                <Link 
+                  onClick={() => setShowMobileMenu(false)}
+                  to="/login"
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] text-white text-center font-semibold text-sm shadow-md shadow-indigo-500/20 flex items-center justify-center gap-2"
+                >
+                  <span>Login / Register</span>
+                </Link>
+              ) : (
+                <button 
+                  onClick={() => { setShowMobileMenu(false); onLogout(); }}
+                  className="w-full py-3 px-4 rounded-xl bg-red-50 text-red-600 hover:bg-red-500 hover:text-white transition-colors font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout Account</span>
+                </button>
+              )}
+              <div className="text-center text-[10px] text-slate-400 font-medium">
+                JobPortal • Jobnetic Edition © 2026
+              </div>
+            </div>
+
           </div>
-        </div>
+        </>
       )}
     </div>
   );

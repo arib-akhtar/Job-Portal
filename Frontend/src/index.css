@@ -149,6 +149,18 @@ textarea {
   }
 }
 
+/* Off-screen section performance optimization */
+.optimized-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* High-performance hardware-accelerated subtle fade */
+.fast-fade {
+  opacity: 1;
+  transform: translateZ(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -161,4 +173,4 @@ textarea {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
+}

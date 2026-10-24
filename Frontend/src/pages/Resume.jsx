@@ -1,25 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../utils/api';
 
 const Resume = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, { threshold: 0.15 });
-
-    const elements = document.querySelectorAll('.scroll-fade');
-    elements.forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -85,52 +70,40 @@ const Resume = () => {
   };
 
   return (
-    <div className="py-8">
-      
-      <style>{`
-        .scroll-fade {
-          opacity: 0;
-          transform: translateY(40px);
-          transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .scroll-fade.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-
-      <input 
-        type="file" 
-        ref={fileInputRef} 
-        style={{ display: "none" }} 
-        accept=".pdf,.doc,.docx" 
+    <div className="optimized-section w-full max-w-[1480px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-12 lg:py-16">
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        accept=".pdf,.doc,.docx"
         onChange={handleFileChange}
       />
 
-      <div className="scroll-fade grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center bg-gradient-to-r from-[#fefefe] to-[#f8fafc] rounded-3xl p-6 sm:p-10 lg:p-12 shadow-sm border border-slate-200">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center bg-white rounded-3xl sm:rounded-[32px] p-6 sm:p-10 md:p-12 lg:p-14 xl:px-16 xl:py-14 shadow-sm border border-slate-200/90 overflow-hidden">
         
-        {/* Model Image - Hidden on mobile screens */}
-        <div className="hidden md:flex justify-center">
-          <img 
+        {/* Model Image - Hidden on mobile, cleanly anchored to bottom on desktop & tablet */}
+        <div className="hidden md:flex w-full h-full justify-center items-end self-end md:order-first relative md:-mb-12 lg:-mb-14 xl:-mb-14">
+          <img
             src="/sir4.png"
             alt="Resume Review"
             loading="lazy"
-            className="w-full max-w-[400px] object-contain transition-transform duration-300 hover:scale-[1.02]"
+            width="480"
+            height="430"
+            className="w-full max-w-[380px] lg:max-w-[440px] xl:max-w-[480px] h-auto object-contain object-bottom self-end transition-transform duration-300 hover:scale-[1.01] block"
           />
         </div>
 
         <div className="text-left space-y-4 sm:space-y-6">
-          <h2 className="text-2xl sm:text-3xl lg:text-[2.5rem] font-bold text-[#0A2540] leading-tight">
-            Get a free professional<br />resume review
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[42px] font-bold text-[#0A2540] leading-tight tracking-tight">
+            Get a free professional<br className="hidden sm:inline" /> resume review
           </h2>
-          <p className="text-[#5E6D77] text-sm sm:text-base leading-relaxed">
+          <p className="text-[#5E6D77] text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl">
             Upload your resume to see how it performs with recruiters and applicant tracking systems.
             Get a personalized score and expert feedback that's fast, free, and actionable.
           </p>
           <button
             onClick={handleButtonClick}
-            className="relative isolate overflow-hidden bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] text-slate-900 font-semibold px-7 py-3.5 rounded-xl text-base shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer flex items-center gap-2"
+            className="relative isolate overflow-hidden bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] text-slate-900 font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl text-sm sm:text-base shadow-md transition-transform duration-200 hover:scale-[1.02] cursor-pointer flex items-center gap-2"
           >
             <span>Upload Your CV &rarr;</span>
           </button>
@@ -141,4 +114,4 @@ const Resume = () => {
   );
 };
 
-export default Resume;
+export default Resume;

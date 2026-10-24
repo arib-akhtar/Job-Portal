@@ -43,6 +43,13 @@ app.use(passport.session());
 app.use(cookieParser());
 app.use(express.json());
 
+app.get(["/health", "/api/health"], (req, res) => {
+    res.status(200).json({
+        status: "OK",
+        timestamp: new Date().toISOString()
+    });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/application", applicationRoutes);

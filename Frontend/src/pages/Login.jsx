@@ -14,23 +14,6 @@ function Login({ onLogin }) {
   const [isForgotMode, setIsForgotMode] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, { threshold: 0.15 });
-
-    const elements = document.querySelectorAll('.scroll-fade, .image-zoom-reveal');
-    elements.forEach(el => observer.observe(el));
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -86,57 +69,29 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="flex min-h-[82vh] items-center justify-center py-8">
-      
-      <style>{`
-        .scroll-fade {
-          opacity: 0;
-          transform: translateY(50px);
-          transition: opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1), transform 2.5s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .scroll-fade.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .image-zoom-reveal {
-          opacity: 0;
-          transform: scale(0.6) translateY(50px);
-          transition: opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1), transform 2.5s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .image-zoom-reveal.active {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-
-        select option:checked, select option:hover {
-          background: linear-gradient(to right, #d3c4f5, #9795f3) !important;
-          color: #000 !important;
-        }
-      `}</style>
-
-      <div className="grid w-full max-w-6xl gap-8 lg:grid-cols-[1.05fr_0.95fr] px-4 sm:px-6">
-        <div className="scroll-fade rounded-[28px] bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] p-8 text-black shadow-[0_20px_60px_rgba(15,23,42,0.25)] sm:p-10 border border-white/20">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-black">Job Portal</p>
-          <h1 className="mt-4 text-3xl font-semibold sm:text-4xl text-black">Find your next opportunity with confidence.</h1>
-          <p className="mt-4 max-w-xl text-sm leading-7 text-black sm:text-base">
-            Recruiters handle hiring, and seekers discover roles in one polished experience.
-          </p>
-          <div className="mt-8 rounded-2xl border border-black/15 bg-white/20 p-4 backdrop-blur">
-            <div className="flex items-center gap-2 text-sm font-medium text-black">
-              <span className="h-2.5 w-2.5 rounded-full bg-slate-900" />
+    <div className="flex min-h-[80vh] items-center justify-center py-6 sm:py-8">
+      <div className="grid w-full max-w-6xl gap-6 lg:gap-8 lg:grid-cols-[1.05fr_0.95fr] px-4 sm:px-6">
+        <div className="rounded-[28px] bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] p-6 sm:p-10 text-black shadow-[0_20px_50px_rgba(15,23,42,0.15)] border border-white/20 flex flex-col justify-between">
+          <div>
+            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-black">Job Portal</p>
+            <h1 className="mt-3 sm:mt-4 text-2xl sm:text-3xl lg:text-4xl font-bold text-black tracking-tight leading-tight">Find your next opportunity with confidence.</h1>
+            <p className="mt-3 sm:mt-4 max-w-xl text-xs sm:text-sm leading-relaxed text-black/90">
+              Recruiters handle hiring, and seekers discover roles in one polished experience.
+            </p>
+          </div>
+          <div className="mt-6 sm:mt-8 rounded-2xl border border-black/15 bg-white/20 p-4 backdrop-blur">
+            <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-black">
+              <span className="h-2 w-2 rounded-full bg-slate-900" />
               Fast onboarding
             </div>
-            <div className="mt-3 grid gap-2 text-sm text-black sm:grid-cols-2">
+            <div className="mt-3 grid gap-2 text-xs sm:text-sm text-black sm:grid-cols-2">
               <div className="rounded-xl bg-white/20 px-3 py-2">Role-based dashboards</div>
               <div className="rounded-xl bg-white/20 px-3 py-2">Application tracking</div>
             </div>
           </div>
         </div>
 
-        <div className="image-zoom-reveal glass-card p-6 sm:p-8 rounded-[28px] bg-white shadow-xl border border-slate-100">
+        <div className="glass-card p-6 sm:p-8 rounded-[28px] bg-white shadow-lg border border-slate-100">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-slate-800">{isForgotMode ? "Reset Password" : "Welcome Back"}</h2>
             <p className="mt-2 text-sm text-slate-500">{isForgotMode ? "Enter your email to receive reset link" : "Login to continue your journey"}</p>

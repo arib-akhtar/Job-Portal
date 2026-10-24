@@ -71,6 +71,15 @@ function App() {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    const rawUrl = (import.meta.env.VITE_API_URL || 'https://job-portal-v23h.onrender.com').trim().replace(/\/+$/, '');
+    const backendUrl = rawUrl.endsWith('/api') ? rawUrl.slice(0, -4) : rawUrl;
+
+    fetch(`${backendUrl}/health`, { method: 'GET' }).catch(() => {
+      // Silently catch errors to prevent cold starts from interrupting user experience
+    });
+  }, []);
+
   const handleLogin = (loggedInUser) => {
     localStorage.setItem('user', JSON.stringify(loggedInUser));
     setUser(loggedInUser);
@@ -105,7 +114,7 @@ function App() {
           </>
         )}
 
-        <div className={location.pathname === '/admin/dashboard' ? 'w-full p-0 m-0' : 'mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8 page-enter'}>
+        <div className={['/admin/dashboard', '/seeker', '/recruiter'].includes(location.pathname) ? 'w-full p-0 m-0' : 'mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8 page-enter'}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/home" element={<Navigate to="/" replace />} />

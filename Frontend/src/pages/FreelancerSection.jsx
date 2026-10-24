@@ -9,93 +9,52 @@ const FreelancerSection = ({
     { title: "Grow & Get Paid Securely", desc: "Deliver quality work, receive reviews, and enjoy fast, secure payments." }
   ] 
 }) => {
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, { threshold: 0.15 });
-
-    const elements = document.querySelectorAll('.scroll-fade, .image-zoom-reveal');
-    elements.forEach(el => observer.observe(el));
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
-    <div style={sectionStyle} className="pt-8 max-w-[85rem] mx-auto px-6">
-      
-      {/* Scroll animation styles */}
-      <style>{`
-        .scroll-fade {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .scroll-fade.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .image-zoom-reveal {
-          opacity: 0;
-          transform: scale(0.9) translateY(20px);
-          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .image-zoom-reveal.active {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-      `}</style>
-
-      <div className="image-zoom-reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-transparent rounded-[24px] p-8 md:p-12 relative overflow-hidden">
+    <div style={sectionStyle} className="optimized-section pt-8 sm:pt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center bg-transparent rounded-3xl p-4 sm:p-8 md:p-10 relative overflow-hidden">
         
         {/* Left Side: Text, Features Grid & Buttons */}
-        <div className="scroll-fade">
-          
-          {/* Animated Company Image placed cleanly above the heading without overlapping */}
-          <div className="mb-4 w-16 h-16">
+        <div>
+          {/* Animated Company Image placed cleanly above the heading */}
+          <div className="mb-4 w-12 h-12 sm:w-14 sm:h-14">
             <img 
               src="/animated image.png" 
               alt="Decoration" 
-              className="w-full h-full object-contain drop-shadow-md animate-pulse"
+              width="56"
+              height="56"
+              loading="lazy"
+              className="w-full h-full object-contain drop-shadow-xs"
             />
           </div>
 
-          <h2 className="text-[2.5rem] font-bold text-[#0A2540] leading-tight">
-            Your Next Opportunity, <br />One Click Away
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2540] leading-tight tracking-tight">
+            Your Next Opportunity, <br className="hidden sm:inline" />One Click Away
           </h2>
-          <p className="text-[#5E6D77] my-4 text-[1.05rem]">
+          <p className="text-[#5E6D77] my-3 sm:my-4 text-sm sm:text-base leading-relaxed">
             Showcase Your Skills, Get Matched With Projects You Love, And Build A Successful Freelance Career.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 my-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 my-6">
             {freelancerFeatures.map((item, i) => (
               <div
                 key={i}
-                className="p-4 rounded-xl bg-transparent transition-all duration-300 ease-in-out cursor-default hover:bg-[#f8fafc] hover:scale-[1.02]"
+                className="p-3.5 sm:p-4 rounded-xl bg-slate-50/60 sm:bg-transparent border border-slate-100 sm:border-transparent transition-colors duration-200 cursor-default hover:bg-white hover:shadow-xs"
               >
-                <div className="bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] bg-clip-text text-transparent text-[1.5rem] mb-2 font-bold">&#x2713;</div>
-                <h4 className="font-semibold text-[#0A2540] m-0 text-[0.95rem]">{item.title}</h4>
-                <p className="text-[0.85rem] text-[#5E6D77] mt-1 m-0 leading-relaxed">{item.desc}</p>
+                <div className="bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] bg-clip-text text-transparent text-xl sm:text-2xl mb-1.5 font-bold">&#x2713;</div>
+                <h4 className="font-semibold text-[#0A2540] m-0 text-sm sm:text-base">{item.title}</h4>
+                <p className="text-xs sm:text-sm text-[#5E6D77] mt-1 m-0 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex gap-4 mt-8 flex-wrap">
+          <div className="flex gap-3 sm:gap-4 mt-6 sm:mt-8 flex-wrap">
             <button
-              className="py-3 px-8 bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] text-black border-none rounded-[10px] font-semibold cursor-pointer transition-all duration-300 shadow-md hover:scale-[1.02] hover:shadow-[0_8px_20px_rgba(60,71,200,0.4)]"
+              className="py-3 px-6 sm:px-8 bg-gradient-to-r from-[#d3c4f5] via-[#9795f3] to-[#3c47c8] text-slate-900 border-none rounded-xl font-semibold text-sm sm:text-base cursor-pointer transition-transform duration-200 shadow-md hover:scale-[1.02]"
             >
               Start Earning Today &rarr;
             </button>
             <button
-              className="py-3 px-8 bg-transparent text-[#635BFF] border-2 border-[#635BFF] rounded-[10px] font-semibold cursor-pointer transition-all duration-300 hover:bg-[#f1f5f9] hover:scale-[1.02]"
+              className="py-3 px-6 sm:px-8 bg-transparent text-[#635BFF] border-2 border-[#635BFF] rounded-xl font-semibold text-sm sm:text-base cursor-pointer transition-all duration-200 hover:bg-[#f1f5f9] hover:scale-[1.02]"
             >
               Get Job Alerts
             </button>
@@ -103,13 +62,15 @@ const FreelancerSection = ({
         </div>
 
         {/* Right Side: Image matching reference layout */}
-        <div className="scroll-fade flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <div className="relative w-full max-w-[500px]">
             <img
               src="https://demoapus1.com/jobnetic/wp-content/uploads/2025/10/h67.jpg"
               alt="Freelancer"
               loading="lazy"
-              className="w-full h-auto rounded-[20px] shadow-lg object-cover transition-transform duration-400 ease-in-out hover:scale-[1.02]"
+              width="500"
+              height="380"
+              className="w-full h-auto rounded-2xl sm:rounded-3xl shadow-lg object-cover transition-transform duration-300 hover:scale-[1.01]"
             />
           </div>
         </div>

@@ -38,87 +38,51 @@ const TopTalent = ({
     navigate('/login');
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
-      });
-    }, { threshold: 0.15 });
-
-    const elements = document.querySelectorAll('.scroll-fade, .image-zoom-reveal');
-    elements.forEach(el => observer.observe(el));
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   return (
-    <div style={sectionStyle} className="pt-8 max-w-[85rem] mx-auto px-6">
+    <div style={sectionStyle} className="optimized-section pt-8 sm:pt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <Toaster position="top-right" />
-      
-      {/* Faster transition and transparent background */}
-      <style>{`
-        .scroll-fade {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .scroll-fade.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
 
-        .image-zoom-reveal {
-          opacity: 0;
-          transform: scale(0.9) translateY(20px);
-          transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: opacity, transform;
-        }
-        .image-zoom-reveal.active {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-      `}</style>
-
-      <div className="image-zoom-reveal grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-transparent rounded-[24px] p-8 md:p-12 relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center bg-transparent rounded-3xl p-4 sm:p-8 md:p-10 relative overflow-hidden">
         
         {/* Left Side: Image with floating badges */}
-        <div className="scroll-fade relative flex justify-center items-center order-2 lg:order-1">
+        <div className="relative flex justify-center items-center order-2 lg:order-1 pt-4 sm:pt-0">
           <div className="relative w-full max-w-[500px]">
             <img
               src="https://demoapus1.com/jobnetic/wp-content/uploads/2025/10/h61.jpg"
               alt="Top Talent"
               loading="lazy"
-              className="w-full h-auto rounded-[20px] shadow-lg object-cover transition-transform duration-400 ease-in-out hover:scale-[1.02]"
+              width="500"
+              height="380"
+              className="w-full h-auto rounded-2xl sm:rounded-3xl shadow-lg object-cover transition-transform duration-300 hover:scale-[1.01]"
             />
             
-            {/* Top-Right Floating Badge on Image with smooth bounce/float animation */}
-            <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-100 animate-[bounce_3s_infinite]">
+            {/* Top-Right Floating Badge on Image */}
+            <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl shadow-lg flex items-center gap-2.5 sm:gap-3 border border-slate-100">
               <img 
                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=Samana" 
                 alt="User" 
-                className="w-10 h-10 rounded-full object-cover border border-indigo-200"
+                width="40"
+                height="40"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-indigo-200"
               />
               <div>
-                <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider m-0">Verified Talent Hired</p>
-                <h5 className="text-xs font-bold text-[#0A2540] m-0">Top Talent Hired</h5>
+                <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium uppercase tracking-wider m-0">Verified Talent</p>
+                <h5 className="text-xs sm:text-sm font-bold text-[#0A2540] m-0">Top Talent Hired</h5>
               </div>
             </div>
 
             {/* Bottom-Left Floating Card on Image */}
-            <div className="absolute -bottom-6 left-4 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-100 max-w-[240px]">
+            <div className="absolute bottom-2 sm:-bottom-4 left-2 sm:left-4 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-xl flex items-center gap-2.5 sm:gap-3 border border-slate-100 max-w-[220px] sm:max-w-[240px]">
               <img 
                 src="https://api.dicebear.com/7.x/avataaars/svg?seed=Liam" 
                 alt="Liam Carter" 
-                className="w-12 h-12 rounded-full object-cover border border-indigo-200"
+                width="48"
+                height="48"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border border-indigo-200"
               />
               <div>
                 <h5 className="text-xs font-bold text-[#0A2540] m-0">Liam Carter</h5>
-                <p className="text-[11px] text-slate-500 m-0">Senior React Developer</p>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 m-0">Senior React Developer</p>
                 <div className="flex items-center gap-2 mt-1 text-[10px] text-slate-600 font-semibold">
                   <span className="text-emerald-600">⚡ $18/Hr</span>
                   <span>📍 New York</span>
@@ -129,19 +93,26 @@ const TopTalent = ({
         </div>
 
         {/* Right Side: Content & Steps */}
-        <div className="scroll-fade order-1 lg:order-2 relative">
+        <div className="order-1 lg:order-2 relative">
           
           {/* 3D Animated Image at Top-Right of the text section */}
-          <div className="absolute -top-6 right-0 w-24 h-24 pointer-events-none z-10">
+          <div className="absolute -top-4 right-0 w-16 h-16 sm:w-20 sm:h-20 pointer-events-none z-10 opacity-80">
             <img 
               src="/animated image.png" 
               alt="Decoration" 
-              className="w-full h-full object-contain drop-shadow-md animate-pulse"
+              width="80"
+              height="80"
+              loading="lazy"
+              className="w-full h-full object-contain drop-shadow-sm"
             />
           </div>
 
-          <h2 className="text-[2.2rem] font-bold text-[#0A2540] leading-tight pr-16">Find Top Talent Fast & Hassle-Free</h2>
-          <p className="text-[#5E6D77] mt-3 mb-8 text-[1.05rem]">Access a Global Pool of Verified Freelancers Ready To Deliver Quality Work On Time and On Budget.</p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A2540] leading-tight pr-12 sm:pr-16 tracking-tight">
+            Find Top Talent Fast & Hassle-Free
+          </h2>
+          <p className="text-[#5E6D77] mt-2.5 mb-6 text-sm sm:text-base leading-relaxed">
+            Access a Global Pool of Verified Freelancers Ready To Deliver Quality Work On Time and On Budget.
+          </p>
           
           <div className="flex flex-col gap-4">
             {topTalentSteps.map((item, i) => (
