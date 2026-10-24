@@ -1,28 +1,34 @@
-const nodemailer = require("nodemailer");
-
 async function sendEmail(options) {
     try {
-        const transporter = nodemailer.createTransport({
-            host: "smtp-relay.brevo.com",
-            port: 587,
-            secure: false, // false for port 587
-            auth: {
-                user: process.env.SMTP_USER, // Yeh Render par set kiya hai
-                pass: process.env.SMTP_PASS, // Yeh bhi Render par set kiya hai
+        const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+            method: "POST",
+            headers: {
+                "accept": "application/json",
+                "api-key": process.env.SMTP_PASS, // Aapka Brevo SMTP/API Key
+                "content-type": "application/json"
             },
-            connectionTimeout: 10000,
-            socketTimeout: 10000
+            body: JSON.stringify({
+                sender: {
+                    name: "JobNetic Job Portal",
+                    email: process.env.EMAIL_USER
+                },
+                to: [
+                    {
+                        email: options.email
+                    }
+                ],
+                subject: options.subject,
+                textContent: options.message
+            })
         });
 
-        const mailOptions = {
-            from: `"JobNetic Job Portal" <${process.env.EMAIL_USER}>`,
-            to: options.email,
-            subject: options.subject,
-            text: options.message
-        };
+        const data = await response.json();
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log("Email sent successfully:", info.response);
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to send email via Brevo API");
+        }
+
+        console.log("Email sent successfully via API:", data);
         return true;
     } catch (error) {
         console.error("Email sending error:", error.message);
