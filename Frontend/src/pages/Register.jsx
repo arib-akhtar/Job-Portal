@@ -16,6 +16,16 @@ function Register({ onLogin }) {
 
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
+  const [isResending, setIsResending] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  useEffect(() => {
+    let timer;
+    if (resendCooldown > 0) {
+      timer = setTimeout(() => setResendCooldown((prev) => prev - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,6 +74,27 @@ function Register({ onLogin }) {
       }
     } catch (error) {
       alert(error.response?.data?.message || 'Invalid or expired OTP.');
+    }
+  };
+
+  // 3. Resend OTP Handler
+  const handleResendOtp = async () => {
+    if (isResending || resendCooldown > 0) return;
+
+    setIsResending(true);
+    try {
+      const response = await API.post("/auth/resend-otp", {
+        email: formData.email
+      });
+
+      if (response.data.success) {
+        alert(response.data.message || "A new OTP has been sent to your email!");
+        setResendCooldown(30);
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to resend OTP. Please try again.');
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -244,10 +275,21 @@ function Register({ onLogin }) {
                   maxLength="6"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  placeholder="123456"
+                  placeholder=""
                   required
                   className="w-full text-center tracking-[0.5em] text-2xl font-bold rounded-xl border border-slate-300 bg-slate-50 py-3 px-3 outline-none transition focus:border-blue-500 text-slate-800"
                 />
+                <div className="mt-2.5 flex items-center justify-between text-xs sm:text-sm">
+                  <span className="text-slate-500">Didn't receive the code?</span>
+                  <button
+                    type="button"
+                    onClick={handleResendOtp}
+                    disabled={isResending || resendCooldown > 0}
+                    className="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline disabled:text-slate-400 disabled:no-underline cursor-pointer disabled:cursor-not-allowed transition"
+                  >
+                    {isResending ? 'Sending...' : resendCooldown > 0 ? `Resend OTP in ${resendCooldown}s` : 'Resend OTP'}
+                  </button>
+                </div>
               </div>
 
               <button

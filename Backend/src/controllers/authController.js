@@ -126,6 +126,61 @@ async function verifyOtp(req, res) {
     }
 }
 
+// 2b. RESEND OTP
+async function resendOtp(req, res) {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found with this email"
+            });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({
+                success: false,
+                message: "User is already verified. Please login."
+            });
+        }
+
+        const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const otpExpireDate = Date.now() + 10 * 60 * 1000;
+
+        user.otp = otpCode;
+        user.otpExpire = otpExpireDate;
+        await user.save();
+
+        await sendEmail({
+            email: user.email,
+            subject: "Account Verification OTP - JobPortal Nexus",
+            message: `Hello ${user.name},\n\nYour new OTP for account verification is: ${otpCode}\nThis OTP is valid for 10 minutes.\n\nRegards,\nJobPortal Nexus`
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "A new OTP has been sent to your email."
+        });
+
+    } catch (error) {
+        console.error("RESEND OTP ERROR:", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Failed to resend OTP"
+        });
+    }
+}
+
 // 3. LOGIN USER
 async function loginUser(req, res) {
     try {
@@ -403,6 +458,7 @@ async function resetPassword(req, res) {
 module.exports = {
     registerUser,
     verifyOtp,
+    resendOtp,
     loginUser,
     googleAuth,
     googleCallback,

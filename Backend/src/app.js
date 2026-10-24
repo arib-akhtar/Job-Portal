@@ -50,7 +50,7 @@ app.get(["/health", "/api/health"], (req, res) => {
     });
 });
 
-app.use("/api/auth", authRoutes);
+app.use(["/api/auth", "/api/v1/auth"], authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/application", applicationRoutes);
 app.use("/api/seeker", profileRoutes);

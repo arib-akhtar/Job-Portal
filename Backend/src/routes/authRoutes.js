@@ -3,7 +3,8 @@ const passport = require("passport");
 const router = express.Router();
 const { 
     registerUser, 
-    verifyOtp, // 👈 Yahan verifyOtp import kar liya hai
+    verifyOtp,
+    resendOtp,
     loginUser, 
     googleCallback, 
     googleAuth, 
@@ -17,6 +18,9 @@ router.post("/signup", registerUser);
 
 // POST /api/auth/verify-otp (👈 Naya route OTP verify karne ke liye)
 router.post("/verify-otp", verifyOtp);
+
+// POST /api/auth/resend-otp (Resend OTP endpoint)
+router.post("/resend-otp", resendOtp);
 
 // POST /api/auth/login
 router.post("/login", loginUser);
